@@ -1,0 +1,7 @@
+def read_file(filename):
+    "Read the contents of FILENAME and return as a string."
+    infile = open(filename) # windows users should use codecs.open after importing codecs
+    contents = infile.read()
+    infile.close()
+    return contents
+
