@@ -1,0 +1,194 @@
+
+from os import listdir
+from os.path import splitext
+
+def read_file(filename):
+    "Read the contents of FILENAME and return as a string."
+    infile = open(filename, encoding="utf8") # windows users should use codecs.open after importing codecs
+    contents = infile.read()
+    infile.close()
+    return contents
+	
+def list_textfiles(directory):
+    "Return a list of filenames ending in '.txt' in DIRECTORY."
+    textfiles = []
+    for filename in listdir(directory):
+        if filename.endswith(".txt"):
+            textfiles.append(directory + "/" + filename)
+    return textfiles
+
+print("hello")
+
+'''
+for filepath in list_textfiles("gutenberg/training"):
+    text = read_file(filepath)
+    print(filepath +  " has " + str(len(text)) + " characters.")
+	
+'''
+
+def end_of_sentence_marker(character):
+	end_of_sentence = ".?!"
+	if character in end_of_sentence:
+		return True
+	else:
+		return False
+
+'''
+print("done")
+print(end_of_sentence_marker("?") == True)
+print(end_of_sentence_marker("a") == False)
+
+'''
+
+
+def split_sentences(text):
+	#splits sentences based on .?!
+	sentences = []
+	start = 0
+	for index, character in enumerate(text):
+		if end_of_sentence_marker(character):
+			sentence = text[start:index+1]
+			sentences.append(sentence)
+			start = index + 1
+	return sentences
+
+
+def tokenize(text):
+	"""Transform TEXT into a list of sentences. Lowercase 
+    each sentence and remove all punctuation. Finally split each
+    sentence into a list of words."""
+	clean = []
+	sentences = split_sentences(text)
+	for sentence in sentences:
+		temp = sentence.lower().replace(",", "").replace("/", "").replace("!", "").replace(".", "").replace("?", "").replace("?", "").split()
+		clean.append(temp)
+	return clean
+
+
+def clean_arabian(directory):
+	corpus = []
+	list_text_files = list_textfiles(directory)
+	for file in list_text_files:
+		temp = read_file(file)
+		corpus.append(tokenize(temp))
+	return corpus
+
+	
+	
+	
+
+def remove_ext(filename):
+	#returns filename witout ext given FILENAME
+	token = splitext(filename)
+	return token[0]
+
+'''
+print(remove_ext("data/arabian_nights/1.txt") == "data/arabian_nights/1")
+print(remove_ext("ridiculous_selfie.jpg") == "ridiculous_selfie")	
+'''
+
+from os.path import basename 
+
+def remove_dir(filepath):
+	#takes FILEPATH and removes preceding path leaving only filename
+	token = basename(filepath)
+	return token
+
+'''
+print(remove_dir("data/arabian_nights/1.txt") == "1.txt")
+print(remove_dir("/a/kind/of/funny/filepath/to/file.txt") == "file.txt")
+'''
+
+def get_filename(filepath):
+	#removes and gives only clean file name from filepath
+	token = remove_dir(filepath)
+	token = remove_ext(token)
+	return token
+	
+'''print(get_filename("data/arabian_nights/1.txt") == '1')'''
+
+
+def get_night(filepath):
+	#gets number corresponding to night per filename path
+	return int(get_filename(filepath))
+	
+'''print(get_night("dataasdfsd/arabian_nights/1.txt") == 1)
+'''
+corpus = []
+filenames = list_textfiles("arabian_nights")
+filenames.sort(key=get_night)
+for filename in filenames:
+	text = read_file(filename)
+	corpus.append(tokenize(text))
+
+print(len(corpus))
+
+sentences_per_night = []
+for night in corpus:
+	sentences_per_night.append(len(night))
+
+words_per_night = []
+for night in corpus:
+    n_words = 0
+    for sentence in night:
+        n_words += len(sentence)
+    words_per_night.append(n_words)
+	
+	
+
+def story_time(text):
+	#takes TEXT and computes 
+	n_words = 0
+	for sentence in text:
+		n_words += len(sentence)
+	return n_words/130
+	
+
+story_time_per_night = []
+
+for night in corpus:
+	test = story_time(night)
+	story_time_per_night.append(test)
+
+
+import matplotlib.pyplot as plt
+
+plt.plot(sentences_per_night)
+
+
+def positions_of(word):
+	list23  = []
+	token = 0 
+	for index, night in enumerate(corpus):
+		for index2, sentence in enumerate(night):
+			for index3, wording in enumerate(sentence):
+				token += 1
+				if word == wording:
+					list23.append(token)
+
+	return list23
+			
+
+positions_of_shahrazad = positions_of("shahrazad")
+positions_of_ali = positions_of("ali")
+positions_of_egypt = positions_of("egypt")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
