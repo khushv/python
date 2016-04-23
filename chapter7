@@ -1,0 +1,57 @@
+#http://nbviewer.jupyter.org/github/fbkarsdorp/python-course/blob/master/Chapter%207%20-%20Archiving%20and%20Searching.ipynb
+import itertools
+'''
+def AND2(vector_a, vector_b):
+	vector_c = []
+	for a, b in zip(vector_a, vector_b):
+		if (a == 1) and (b == 1):
+			vector_c.append(1)
+		else:
+			vector_c.append(0)
+	print(vector_c)
+	return vector_c
+		
+#print(ANsD([1, 1, 0, 0], [1, 1, 1, 0]) == [1, 1, 0, 0])
+#print(AND([1, 0, 0, 1, 0, 0, 1], [1, 1, 1, 0, 1, 0, 1]) == [1, 0, 0, 0, 0, 0, 1])
+
+'''
+def AND(*vectors):
+	array_c = []
+	length = len(vectors)
+	sample = vectors[0]
+	sample_length = len(sample)
+		
+	for i in range(0, sample_length):
+		if sample[i] == 0:
+			print(0)
+			array_c.append(0) # = array_c + (0)
+		else:
+			temp_flag = 0
+			for vector in vectors:
+				if vector[i] == 1:
+					temp_flag = 1
+				else:
+					temp_flag = 0
+					break
+			print(temp_flag)
+			array_c.append(temp_flag) # = array_c + (temp_flag)
+	return array_c
+#print(AND([1, 1, 1, 0, 1], [1, 0, 0, 1, 0], [0, 1, 1, 0, 1]))
+#print(AND([1, 1, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0]) == [1, 0, 0, 0])
+#print(AND([1, 1, 1, 0, 1], [1, 0, 0, 1, 0], [0, 1, 1, 0, 1]) == [0, 0, 0, 0, 0])
+
+def NOT(vector):
+	char_c = []
+	for i in range(0, len(vector)):
+		if vector[i] == 1:
+			char_c.append(0)
+		else:
+			char_c.append(1)
+	return char_c
+		
+print(AND([1, 1, 0, 0], [1, 1, 1, 0], NOT([1, 0, 0, 0])) == [0, 1, 0, 0])
+		
+		
+		
+		
+		
